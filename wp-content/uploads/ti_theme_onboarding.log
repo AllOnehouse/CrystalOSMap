@@ -1,0 +1,16 @@
+[02/Jul/2020:16:07:04] (I): WordPress Instance Info:
+[02/Jul/2020:16:07:04] (I): Home URL : http://localhost:8080/crystalOSMap
+[02/Jul/2020:16:07:04] (I): Site URL : http://localhost:8080/crystalOSMap
+[02/Jul/2020:16:07:04] (I): WordPress Version : 5.4.2
+[02/Jul/2020:16:07:04] (I): Onboarding Version : 1.0.1
+[02/Jul/2020:16:07:04] (I): Multisite : No
+[02/Jul/2020:16:07:04] (I): Server Info : nginx/1.12.0
+[02/Jul/2020:16:07:04] (I): PHP Version : 7.2.2
+[02/Jul/2020:16:07:04] (I): HTTPS : No
+[02/Jul/2020:16:07:04] (I): PHP Max Execution Time : 36000
+[02/Jul/2020:16:07:04] (I): PHP Max Input Vars : 1000
+[02/Jul/2020:16:07:04] (I): Max Upload Size : 8388608
+[02/Jul/2020:16:07:04] (I): Plugins:
+[02/Jul/2020:16:07:04] (I): [PLUGIN] Custom Code : v1.0 (Alberto Uozumi)
+[02/Jul/2020:16:07:04] (I): [PLUGIN] JustFreeThemes Assistant : v1.1.0 (JustFreeThemes)
+[02/Jul/2020:16:07:04] (I): [PLUGIN] Image optimization service by Optimole : v2.4.1 (Optimole)

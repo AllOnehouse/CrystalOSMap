@@ -1,0 +1,5 @@
+.htaccess
+*.iml
+.idea/
+wp-config.php
+wp-content/plugins/admin_ips.txt

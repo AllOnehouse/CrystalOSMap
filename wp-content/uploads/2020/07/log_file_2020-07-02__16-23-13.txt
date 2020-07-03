@@ -1,0 +1,53 @@
+
+---Downloaded files---
+The import files for: Demo content were successfully downloaded!
+Initial max execution time = 36000
+Files info:
+Site URL = http://localhost:8080/crystalOSMap
+Data file = D:\laragon\www\crystalOSMap\wp-content\plugins\sydney-toolbox/demo-content/demo-content.xml
+Widget file = D:\laragon\www\crystalOSMap\wp-content\plugins\sydney-toolbox/demo-content/demo-widgets.wie
+Customizer file = D:\laragon\www\crystalOSMap\wp-content\plugins\sydney-toolbox/demo-content/demo-customizer.dat
+Redux files:
+not defined!
+
+------
+New AJAX call!
+
+
+------
+New AJAX call!
+
+
+---Importing widgets---
+Sidebar : 
+
+Recent Posts - Recent News - Imported
+Categories - Categories - Imported
+Archives - Archives - Imported
+Tag Cloud - Popular Tags - Imported
+mc4wp_form_widget - Sign up for Newsletter - Site does not support widget
+
+Footer 1 : 
+
+Image - No Title - Imported
+Text - No Title - Imported
+
+Footer 2 : 
+
+Navigation Menu - About Us - Imported
+
+Footer 3 : 
+
+Navigation Menu - Services - Imported
+
+footer-4 : Sidebar does not exist in theme (moving widget to Inactive)
+
+Text - Contact - Imported to Inactive
+
+
+
+---Importing customizer settings---
+Customizer settings import finished!
+
+---pt-ocdi/after_import---
+
