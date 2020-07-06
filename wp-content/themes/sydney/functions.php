@@ -548,3 +548,22 @@ function sydney_welcome_admin_notice() {
 }
 add_action( 'admin_init', array( 'PAnD', 'init' ) );
 add_action( 'admin_notices', 'sydney_welcome_admin_notice' );
+
+add_action( 'wp_ajax_address_ajax_request', 'tft_handle_ajax_request' );
+add_action( 'wp_ajax_nopriv_address_ajax_request', 'tft_handle_ajax_request' );
+function tft_handle_ajax_request() {
+
+    $jsonData = array();
+    $jsonData = $_REQUEST['addressList'];
+
+    echo "<pre>";
+    print_r($jsonData);
+    echo "</pre>";
+
+    echo '<ul id="custom-name-list">';
+
+    echo '<li class="custom-name-test" data-val="NO Sugesstion found"> NO Sugesstion found</li>';
+
+    echo '</ul>';
+    exit();
+}

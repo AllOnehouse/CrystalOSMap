@@ -1,0 +1,45 @@
+
+---Downloaded files---
+The import files for: Demo content were successfully downloaded!
+Initial max execution time = 36000
+Files info:
+Site URL = http://localhost:8080/crystalOsMap
+Data file = D:\laragon\www\crystalOsMap\wp-content\plugins\sydney-toolbox/demo-content/demo-content.xml
+Widget file = D:\laragon\www\crystalOsMap\wp-content\plugins\sydney-toolbox/demo-content/demo-widgets.wie
+Customizer file = D:\laragon\www\crystalOsMap\wp-content\plugins\sydney-toolbox/demo-content/demo-customizer.dat
+Redux files:
+not defined!
+
+---Importing widgets---
+sidebar-1 : Sidebar does not exist in theme (moving widget to Inactive)
+
+Recent Posts - Recent News - Imported to Inactive
+Categories - Categories - Imported to Inactive
+Archives - Archives - Imported to Inactive
+Tag Cloud - Popular Tags - Imported to Inactive
+mc4wp_form_widget - Sign up for Newsletter - Site does not support widget
+
+footer-1 : Sidebar does not exist in theme (moving widget to Inactive)
+
+Image - No Title - Imported to Inactive
+Text - No Title - Imported to Inactive
+
+footer-2 : Sidebar does not exist in theme (moving widget to Inactive)
+
+Navigation Menu - About Us - Imported to Inactive
+
+footer-3 : Sidebar does not exist in theme (moving widget to Inactive)
+
+Navigation Menu - Services - Imported to Inactive
+
+footer-4 : Sidebar does not exist in theme (moving widget to Inactive)
+
+Text - Contact - Widget already exists
+
+
+
+---Importing customizer settings---
+Error: The customizer import file is not in a correct format. Please make sure to use the correct customizer import file.
+
+---pt-ocdi/after_import---
+

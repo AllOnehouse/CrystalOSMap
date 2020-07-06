@@ -1,0 +1,45 @@
+
+---Downloaded files---
+The import files for: Demo content were successfully downloaded!
+Initial max execution time = 36000
+Files info:
+Site URL = http://localhost:8080/crystalOsMap
+Data file = D:\laragon\www\crystalOsMap\wp-content\plugins\sydney-toolbox/demo-content/demo-content.xml
+Widget file = D:\laragon\www\crystalOsMap\wp-content\plugins\sydney-toolbox/demo-content/demo-widgets.wie
+Customizer file = D:\laragon\www\crystalOsMap\wp-content\plugins\sydney-toolbox/demo-content/demo-customizer.dat
+Redux files:
+not defined!
+
+---Importing widgets---
+Sidebar : 
+
+Recent Posts - Recent News - Widget already exists
+Categories - Categories - Widget already exists
+Archives - Archives - Widget already exists
+Tag Cloud - Popular Tags - Widget already exists
+mc4wp_form_widget - Sign up for Newsletter - Site does not support widget
+
+Footer 1 : 
+
+Image - No Title - Widget already exists
+Text - No Title - Widget already exists
+
+Footer 2 : 
+
+Navigation Menu - About Us - Widget already exists
+
+Footer 3 : 
+
+Navigation Menu - Services - Widget already exists
+
+Footer 4 : 
+
+Text - Contact - Widget already exists
+
+
+
+---Importing customizer settings---
+Error: The customizer import file is not in a correct format. Please make sure to use the correct customizer import file.
+
+---pt-ocdi/after_import---
+
