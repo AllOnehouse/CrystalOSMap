@@ -4,12 +4,23 @@
  *
  * @package Sydney
  */
+function register_cry_session(){
+    if( ! session_id() ) {
+        session_start();
+    }
+}
+add_action('init', 'register_cry_session');
 
 function cos_scripts_method() {
     wp_enqueue_script('custom-js-script',get_stylesheet_directory_uri() . '/js/custom-js.js', array( 'jquery' ));
 }
 add_action( 'wp_enqueue_scripts', 'cos_scripts_method' );
 
+add_action('wp_head', 'codecanal_ajaxurl');
+
+function codecanal_ajaxurl() {
+    echo '<script type="text/javascript"> var ajaxurl = "' . admin_url('admin-ajax.php') . '"; </script>';
+}
 
 if ( ! function_exists( 'sydney_setup' ) ) :
 /**
@@ -553,17 +564,63 @@ add_action( 'wp_ajax_address_ajax_request', 'tft_handle_ajax_request' );
 add_action( 'wp_ajax_nopriv_address_ajax_request', 'tft_handle_ajax_request' );
 function tft_handle_ajax_request() {
 
-    $jsonData = array();
-    $jsonData = $_REQUEST['addressList'];
+    $responseData = array();
+    $results = array();
+    $totalResults = 0;
+    $query = $_REQUEST['searchAddress'];
+    $queryEncode = urlencode($query);
+    $url = 'http://photon.komoot.de/api/?q='.$queryEncode;
 
-    echo "<pre>";
-    print_r($jsonData);
-    echo "</pre>";
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
 
-    echo '<ul id="custom-name-list">';
+    $responseData = json_decode($response, true);
+    $results = $responseData['features'];
+    $totalResults = count($results);
+    $_SESSION['totalResults'] = $totalResults;
+    $_SESSION['query_result'] = $results;
+//    echo "<br/><pre>";
+//    print_r($results);
+//    echo "</pre>";
+    echo '<div id="cry-map-results">';
+    if($totalResults > 0){
+        $mapAddress = $results[0]['properties']['name'].' '.$results[0]['properties']['city'].' '.$results[0]['properties']['state'].' '.$results[0]['properties']['postcode'].' '.$results[0]['properties']['country'];
 
-    echo '<li class="custom-name-test" data-val="NO Sugesstion found"> NO Sugesstion found</li>';
+        echo '<div class="cry-map-record-found" data-val="record found"> We have maps available for '.$query.'</div>';
+        echo '<p> Please enter your email address.</p>';
+        echo '<div style="width: 100%">';
+        echo '<div style="width: 50%"></div>';
+        echo '<div style="width: 50%">
 
-    echo '</ul>';
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+
+        <div id="map" style="height: 500px; width:100%;"></div>
+
+<script type="text/javascript">
+var map = L.map("map").setView([51.505, -0.09], 15);
+
+L.tileLayer("https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor 3857/{z}/{x}/{y}.png?key=3JAXP7ZnfP7JSsZfaqP199N3heFWzsXr", {
+    maxZoom: 20,
+    minZoom: 7
+}).addTo(map);
+</script>
+</div>';
+        echo '</div>';
+    }else{
+        echo '<div class="cry-map-norecord" data-val="NO record found"> NO record found</div>';
+    }
+    echo '</div>';
     exit();
 }
