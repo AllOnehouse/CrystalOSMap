@@ -13,6 +13,8 @@ add_action('init', 'register_cry_session');
 
 function cos_scripts_method() {
     wp_enqueue_script('custom-js-script',get_stylesheet_directory_uri() . '/js/custom-js.js', array( 'jquery' ));
+    wp_enqueue_script('leaflet-js','http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js', array( 'jquery' ));
+    wp_enqueue_style( 'leaflet-css', 'http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css', array(), '1.1', 'all');
 }
 add_action( 'wp_enqueue_scripts', 'cos_scripts_method' );
 
@@ -588,39 +590,162 @@ function tft_handle_ajax_request() {
     $responseData = json_decode($response, true);
     $results = $responseData['features'];
     $totalResults = count($results);
-    $_SESSION['totalResults'] = $totalResults;
-    $_SESSION['query_result'] = $results;
-//    echo "<br/><pre>";
-//    print_r($results);
-//    echo "</pre>";
-    echo '<div id="cry-map-results">';
+    $_SESSION['totalResults'] = 0;
+    $_SESSION['query_result'] = array();
+
+    echo '<div class="cry-map-results" style="width: 100%; display: block;">';
     if($totalResults > 0){
+        $_SESSION['totalResults'] = $totalResults;
+        $_SESSION['query_result'] = $results;
         $mapAddress = $results[0]['properties']['name'].' '.$results[0]['properties']['city'].' '.$results[0]['properties']['state'].' '.$results[0]['properties']['postcode'].' '.$results[0]['properties']['country'];
+        $latitude = $results[0]['geometry']['coordinates'][0];
+        $longitude = $results[0]['geometry']['coordinates'][1];
 
-        echo '<div class="cry-map-record-found" data-val="record found"> We have maps available for '.$query.'</div>';
-        echo '<p> Please enter your email address.</p>';
-        echo '<div style="width: 100%">';
-        echo '<div style="width: 50%"></div>';
-        echo '<div style="width: 50%">
-
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
-
-        <div id="map" style="height: 500px; width:100%;"></div>
-
-<script type="text/javascript">
-var map = L.map("map").setView([51.505, -0.09], 15);
-
-L.tileLayer("https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor 3857/{z}/{x}/{y}.png?key=3JAXP7ZnfP7JSsZfaqP199N3heFWzsXr", {
-    maxZoom: 20,
-    minZoom: 7
-}).addTo(map);
-</script>
-</div>';
+        echo '<div class="cry-map-record-found" style="width: 100%; display: block; margin-top: 50px;">';
+        echo '<div class="cry-content" style="width: 50%; display: inline-block;">';
+            echo '<div>';
+                echo '<form action="/crystalOsMap/?page_id=582" method="post" class="cry-map-frm1" name="map_frm1">';
+                echo '<p style="text-align: center;"><h3 class="cry-heading">We have maps available for <strong>'.$query.'</strong></h3></p>';
+                echo '<p>Please enter your email address.</p>';
+                echo '<p><input type="email" name="user_email" id="user_email" class="user-email" placeholder="Email address">';
+                echo '<input type="hidden" name="total_results" value="'.$totalResults.'" class="total-results" >';
+                echo '<input type="hidden" name="results" value="'.base64_encode(serialize($results)).'" class="results">';
+                echo'</p>';
+                echo '<p><button type="submit" name="email_btn" id="email_btn" value="Submitted" class="email-btn">Get Map</button></p>';
+                echo '</form>';
+            echo '</div>';
+        echo '</div>';
+        echo '<div class="cry-map-area" style="width: 50%;  display: inline-block;">';
+            echo '<div id="map" class="show-map" style="height: 400px; width:100%;"></div>';
+                echo '<script type="text/javascript">
+                    var lat = "'.$latitude.'";
+                    var lon = "'.$longitude.'";
+                    var apikey = "3JAXP7ZnfP7JSsZfaqP199N3heFWzsXr";
+                    var map = L.map("map").setView([lon, lat], 15);
+                    L.tileLayer("https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/EPSG%3A3857/Outdoor 3857/{z}/{x}/{y}.png?key="+apikey, {
+                        maxZoom: 20,
+                        minZoom: 7
+                    }).addTo(map);
+                </script>';
+            echo '</div>';
         echo '</div>';
     }else{
         echo '<div class="cry-map-norecord" data-val="NO record found"> NO record found</div>';
     }
     echo '</div>';
+    exit();
+}
+
+add_action( 'wp_ajax_selectAddress_ajax_request', 'cry_handle_ajax_request' );
+add_action( 'wp_ajax_nopriv_selectAddress_ajax_request', 'cry_handle_ajax_request' );
+function cry_handle_ajax_request() {
+
+
+    $address = $_REQUEST['address'];
+    $email = $_REQUEST['email'];
+    $totalResult = $_REQUEST['totalResults'];
+?>
+    <div class="cry-map-record-found" style="width: 100%; display: block; margin-top: 50px;">
+        <form action="" method="post" class="cry-map-frm2" name="cry_map_frm2">
+        <div class="cry-map-format">
+            <select class="select-format" name="map_format">
+                <option value="" data-prod="raster">Select Format</option>
+                <option value="png" data-prod="raster">PNG</option>
+                <option value="jpeg" data-prod="raster">JPEG/JPG</option>
+                <option value="pdf" data-prod="raster">PDF</option>
+                <option value="doc" data-prod="raster">MS Word</option>
+                <option value="svg" data-prod="vector">SVG</option>
+                <option value="dxf" data-prod="vector">DXF</option>
+                <option value="dwg" data-prod="vector">DWG</option>
+            </select>
+        </div>
+
+        <div class="cry-map-color">
+            <select class="select-color" name="map_color">
+                <option value="">Select Type</option>
+                <option value="colour">Colour</option>
+                <option value="bw">Black &amp; White</option>
+            </select>
+        </div>
+
+        <div class="cry-ma-selection" style="">
+            <p>Select the map size.</p>
+
+            <ul class="cry-map-raster" style="">
+                <li class="check-box">
+                    <label>
+                        <input type="checkbox" name="ptype[]" id="b36b" value="b36b" data-zoom="9">
+                        Site Plan 36mx36m (1:200) £8.50
+                    </label>
+                </li>
+                <li class="check-box">
+                    <label>
+                        <input type="checkbox" name="ptype[]" id="b90b" value="b90b" data-zoom="8">
+                        Site Plan 90mx90m (1:500) £10.50
+                    </label>
+                </li>
+                <li class="check-box">
+                    <label>
+                        <input type="checkbox" name="ptype[]" id="p2b" value="p2b" data-zoom="5">
+                        Location Plan: 2 hectares (1:1,250) £13.00
+                    </label>
+                </li>
+                <li class="check-box">
+                    <label>
+                        <input type="checkbox" name="ptype[]" id="p4b" value="p4b" data-zoom="4">
+                        Location Plan: 4 hectares (1:1,250) £19.00
+                    </label>
+                </li>
+                <li class="check-box">
+                    <label>
+                        <input type="checkbox" name="ptype[]" id="p16b" value="p16b" data-zoom="1">
+                        Location Plan: 16 hectares (1:2,500) £49.00
+                    </label>
+                </li>
+            </ul>
+            <ul class="cry-map-vector" style="display:none;">
+                <li class="radio-box">
+                    <label>
+                        <input type="radio" name="ptype[]" id="v1c" value="v1c" data-zoom="7">
+                        1ha - 100m2 £16.00
+                    </label>
+                </li>
+                <li class="radio-box">
+                    <label>
+                        <input type="radio" name="ptype[]" id="v2c" value="v2c" data-zoom="5">
+                        2ha - 141.42m2 £21.00
+                    </label>
+                </li>
+                <li class="radio-box">
+                    <label>
+                        <input type="radio" name="ptype[]" id="v4c" value="v4c" data-zoom="4">
+                        4ha - 200m2 £39.00
+                    </label>
+                </li>
+                <li class="radio-box">
+                    <label>
+                        <input type="radio" name="ptype[]" id="v10c" value="v10c" data-zoom="2">
+                        10ha - 316m2 £99.00
+                    </label>
+                </li>
+                <li class="radio-box">
+                    <label>
+                        <input type="radio" name="ptype[]" id="v20c" value="v20c" data-zoom="0">
+                        20ha - 447m2 £146.00
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="cry-ma-selection" style="">
+            <input type="hidden" name="totalResult" id="totalResult" value="<?php echo $totalResult; ?>" >
+            <input type="hidden" name="userEmail" id="userEmail" value="<?php echo $email; ?>" >
+            <input type="hidden" name="mapAddress" id="mapAddress" value="<?php echo $address; ?>" >
+            <button type="submit" name="submit_map" id="submit_map" value="Submitted" class="email-btn">Get Map</button></p>
+
+        </div>
+        </form>
+    </div>
+
+<?php
     exit();
 }

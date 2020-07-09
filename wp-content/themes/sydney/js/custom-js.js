@@ -47,7 +47,6 @@ jQuery(document).ready(function(){
 		event.preventDefault();
 		var address = jQuery('.search-txt').val();
 		//var addressList = new Array();
-		alert(address);
 		//var apiKey_maps = 'Sk2PNCZJbgad7WW3qLQYhtjx8Ct9gZdT';
 		//var apiKey_places = '3JAXP7ZnfP7JSsZfaqP199N3heFWzsXr';
 		//var postalCode = '<?php //echo $postalCode; ?>//';
@@ -93,6 +92,7 @@ jQuery(document).ready(function(){
 		// 	});
 		jQuery.ajax({
 			url: ajaxurl,
+			type: 'POST',
 			data: {
 				'action':'address_ajax_request',
 				'post_type': 'POST',
@@ -115,5 +115,66 @@ jQuery(document).ready(function(){
 		// }else{
 		// 	return false;
 		// }
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery(document).on('click','.map-addres-cry',function(e) {
+		event.preventDefault();
+		var address = jQuery(this).html();
+		var email = jQuery('#email').html();
+		var totalResults = jQuery('#totalResults').html();
+
+		jQuery.ajax({
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				'action':'selectAddress_ajax_request',
+				'post_type': 'POST',
+				'address' : address,
+				'email' : email,
+				'totalResults' : totalResults,
+			},
+			success:function(data) {
+				jQuery(".cry-map-address-list-area").hide();
+				jQuery(".map-file-format-area").show();
+				jQuery(".map-file-format-area").html(data);
+			},
+			error: function(errorThrown){
+				console.log(errorThrown);
+			}
+		});
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery(document).on('change','.select-format',function(e) {
+		var selectVal = this.value;
+		if (selectVal.trim()) {
+			var raster = [];
+			var vector = [];
+			raster.push("png");
+			raster.push("jpeg");
+			raster.push("pdf");
+			raster.push("doc");
+			vector.push("svg");
+			vector.push("dxf");
+			vector.push("dwg");
+			if(jQuery.inArray(selectVal, vector) !== -1){
+				console.log("is in array");
+				jQuery(".cry-map-color").hide();
+				jQuery(".cry-map-raster").hide();
+				jQuery(".cry-map-vector").show();
+			}else{
+				jQuery(".cry-map-color").show();
+				jQuery(".cry-map-raster").show();
+				jQuery(".cry-map-vector").hide();
+			}
+		}else{
+			jQuery(".cry-map-color").show();
+			jQuery(".cry-map-raster").show();
+			jQuery(".cry-map-vector").hide();
+		}
+
 	});
 });
