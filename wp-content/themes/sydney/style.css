@@ -3743,3 +3743,12 @@ SVGs
 	width: 400px;
 	height: 45px !important;
 }
+.cry-map-results {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.cry-map-norecord {
+	font-size: 18px;
+	color: #F00 !important;
+	padding: 10px 20px;
+}

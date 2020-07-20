@@ -111,7 +111,7 @@ jQuery(document).ready(function(){
 
 		// if(value){
 		// 	//jQuery('#search-fm').submit();
-		// 	window.location.href = "http://localhost:8080/crystalOsMap/?page_id=582&search="+value;
+		// 	window.location.href = "https://crystalosmaps.co.uk/crystal-os-map/?search="+value;
 		// }else{
 		// 	return false;
 		// }
